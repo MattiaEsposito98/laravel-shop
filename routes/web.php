@@ -18,9 +18,9 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/home', function () {
-    return view('layouts.master');
-});
+// Route::get('/home', function () {
+//     return view('layouts.master');
+// });
 
 // Rotte per Admin
 Route::middleware(['auth', 'verified'])

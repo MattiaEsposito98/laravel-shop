@@ -7,13 +7,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
-<body>
-    <h1 class="text-center">Homepage</h1>
+<body class="bg-secondary-subtle d-flex flex-column min-vh-100">
+    {{-- Navbar --}}
+    <header>
+        @include('partials.navbar')
+    </header>
 
-    @include('partials.navbar')
+    {{-- Main --}}
+    <main class="container-fluid flex-grow-1">
+        @yield('content')
+    </main>
+
+    {{-- Footer --}}
+    <footer>
+        @include('partials.footer')
+    </footer>
 
 </body>
+
 
 </html>
