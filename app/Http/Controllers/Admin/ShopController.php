@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -14,7 +15,7 @@ class ShopController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('layouts.master', compact('products'));
+        return view('products.index', compact('products'));
     }
 
     /**
