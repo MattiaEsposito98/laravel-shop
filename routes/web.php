@@ -1,11 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -22,3 +21,15 @@ require __DIR__ . '/auth.php';
 Route::get('/home', function () {
     return view('layouts.master');
 });
+
+// Rotte per Admin
+Route::middleware(['auth', 'verified'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    });
+
+// CRUD per ShopController
+Route::resource('shops', ShopController::class)
+    ->middleware(['auth', 'verified']);

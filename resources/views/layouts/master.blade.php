@@ -13,6 +13,7 @@
     <h1 class="text-center">Homepage</h1>
 
     @include('partials.navbar')
+
 </body>
 
 </html>
