@@ -3,3 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: red !important; /* Assicurati che questa regola venga applicata */
+}
+
