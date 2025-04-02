@@ -31,5 +31,5 @@ Route::middleware(['auth', 'verified'])
     });
 
 // CRUD per ShopController
-Route::resource('shops', ShopController::class)
+Route::resource('products', ShopController::class)
     ->middleware(['auth', 'verified']);
