@@ -5,7 +5,8 @@
 @section('content')
     <div class="container mt-6">
 
-        <form action="{{ route('products.store') }}" method="POST" class="p-4 shadow rounded bg-light">
+        <form action="{{ route('products.store') }}" method="POST" class="p-4 shadow rounded bg-light"
+            enctype="multipart/form-data">
             @csrf
 
             <h3 class="mb-4 text-primary">Aggiungi un Prodotto</h3>
@@ -38,10 +39,15 @@
                     required>
             </div>
 
+            {{-- Image --}}
+
+            <div class="mb-3">
+                <label for="image">Immagine</label>
+                <input type="file" name="image" id="image">
+            </div>
+
             <!-- Pulsante di invio -->
             <button type="submit" class="btn btn-primary w-100">Salva Prodotto</button>
         </form>
-
-
 
     @endsection
