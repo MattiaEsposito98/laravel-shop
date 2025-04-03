@@ -24,7 +24,8 @@ class ShopController extends Controller
      */
     public function create()
     {
-        //
+        $product = Product::all();
+        return view('products.create', compact('product'));
     }
 
     /**
