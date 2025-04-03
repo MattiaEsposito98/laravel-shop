@@ -1,5 +1,6 @@
 @extends('layouts.master')
 
+
 @section('content')
     <div class="container mt-6 d-flex flex-column justify-content-between" style="height: 80vh;">
         <div class="row">

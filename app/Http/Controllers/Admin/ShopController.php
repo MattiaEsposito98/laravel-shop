@@ -15,7 +15,7 @@ class ShopController extends Controller
     public function index()
     {
 
-        $products = Product::paginate(9);
+        $products = Product::with(['cartItems', 'orderItems'])->paginate(9);
         return view('products.index', compact('products'));
     }
 
@@ -40,6 +40,7 @@ class ShopController extends Controller
      */
     public function show(Product $product)
     {
+        $product->load(['cartItems', 'orderItems']); // Carica le relazioni solo per questo prodotto
         return view('products.show', compact('product'));
     }
 
