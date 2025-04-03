@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -60,23 +59,54 @@ class ShopController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        // Aggiorna i campi base
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
+        $product->stock = $request->input('stock');
+
+        // Controlla se è stata caricata una nuova immagine
+        if ($request->hasFile('image')) {
+            // Elimina l'immagine precedente se esiste
+            if ($product->image) {
+                Storage::delete('public/' . $product->image);
+            }
+
+            // Salva la nuova immagine
+            $img_url = $request->file('image')->store('uploads', 'public');
+            $product->image = $img_url;
+        }
+
+        // Salva le modifiche
+        $product->save();
+
+        return redirect()->route('products.index')->with('success', 'Prodotto aggiornato con successo!');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
         //
     }

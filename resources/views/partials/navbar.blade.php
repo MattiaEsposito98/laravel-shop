@@ -1,5 +1,5 @@
 <nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
+    <div class="container-sm">
         <div>
             <a class = "me-4" href="{{ route('profile.edit') }}">
                 <i class="fa-solid fa-user me-2"></i>{{ Auth::user()->name }}
