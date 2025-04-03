@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,18 +19,9 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-// Route::get('/home', function () {
-//     return view('layouts.master');
-// });
 
 // Rotte per Admin
-Route::middleware(['auth', 'verified'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    });
-
-// CRUD per ShopController
-Route::resource('products', ShopController::class)
-    ->middleware(['auth', 'verified']);
+Route::middleware(['auth', IsAdmin::class])->group(function () {
+    Route::get('/dashboard-admin', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('products', ShopController::class);
+});
