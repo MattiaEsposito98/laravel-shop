@@ -12,7 +12,7 @@
 </head>
 
 
-<body class="bg-secondary-subtle d-flex flex-column min-vh-100">
+<body class="bg-warning-subtle d-flex flex-column min-vh-100">
     {{-- Navbar --}}
     <header>
         @include('partials.navbar')

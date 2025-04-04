@@ -27,6 +27,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 
     //Rotta per i prodotti elimanti
     Route::get('eliminated_products', [ShopController::class, 'eliminated']);
+    Route::get('search_prduct', [ShopController::class, 'search'])->name('products.search');
 });
 
 Route::get('/', function () {
