@@ -52,7 +52,7 @@ class ShopController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load(['cartItems', 'orderItems']); // Carica le relazioni solo per questo prodotto
+        $product->load(['cartItems', 'orderItems', 'orders.user']);  //le tre relazioni
         return view('products.show', compact('product'));
     }
 
@@ -77,7 +77,7 @@ class ShopController extends Controller
             'image' => 'nullable|image|max:2048',
         ]);
 
-        // Aggiorna i campi base
+        // Per aggiornare i campi
         $product->name = $request->input('name');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
@@ -108,6 +108,20 @@ class ShopController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if ($product->image) {
+            Storage::Delete($product->image);
+        }
+        $product->cartItems()->delete();
+
+        // Scollega il prodotto dagli elementi dell'ordine
+        $product->orderItems()->delete();
+
+        // Scollega il prodotto dagli ordini
+        $product->orders()->detach();
+
+        // Elimina il prodotto
+        $product->delete();
+
+        return redirect()->route('products.index');
     }
 }
