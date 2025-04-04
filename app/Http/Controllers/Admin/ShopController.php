@@ -14,7 +14,6 @@ class ShopController extends Controller
      */
     public function index()
     {
-
         $products = Product::with(['cartItems', 'orderItems'])->paginate(9);
         return view('products.index', compact('products'));
     }
@@ -123,5 +122,11 @@ class ShopController extends Controller
         $product->delete();
 
         return redirect()->route('products.index');
+    }
+
+    public function eliminated()
+    {
+        $eliminated_products = Product::onlyTrashed()->get();
+        return view('products.eliminated', compact('eliminated_products'));
     }
 }

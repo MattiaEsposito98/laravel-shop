@@ -24,6 +24,9 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('/dashboard-admin', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('products', ShopController::class);
+
+    //Rotta per i prodotti elimanti
+    Route::get('eliminated_products', [ShopController::class, 'eliminated']);
 });
 
 Route::get('/', function () {
