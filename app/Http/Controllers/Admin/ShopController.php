@@ -142,8 +142,8 @@ class ShopController extends Controller
         // Cerca nei campi 'name' o anche 'description' se vuoi
         $products = Product::where('name', 'LIKE', "%{$query}%")
             ->orWhere('description', 'LIKE', "%{$query}%")
-            ->paginate(9); //usare paginate altrimenti non supporta  links()
-        // ->withQueryString(); // mantiene il ?query= nell'URL anche quando cambi pagina
+            ->paginate(9) //usare paginate altrimenti non supporta  links()
+            ->withQueryString(); // mantiene il ?query= nell'URL anche quando cambi pagina
 
 
         return view('products.index', compact('products', 'query'));
