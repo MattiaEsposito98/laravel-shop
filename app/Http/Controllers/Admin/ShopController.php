@@ -126,7 +126,24 @@ class ShopController extends Controller
 
     public function eliminated()
     {
-        $eliminated_products = Product::onlyTrashed()->get();
+        // Recupera i prodotti eliminati con gli ordini e gli utenti associati
+        $eliminated_products = Product::onlyTrashed()
+            ->with(['orders.user', 'orderItems.product'])
+            ->get();
+
         return view('products.eliminated', compact('eliminated_products'));
+    }
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Cerca nei campi 'name' o anche 'description' se vuoi
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('description', 'LIKE', "%{$query}%")
+            ->get();
+
+        return view('products.index', compact('products', 'query'));
     }
 }

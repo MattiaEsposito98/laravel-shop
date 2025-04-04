@@ -22,4 +22,21 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class, 'order_items', 'product_id', 'order_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {  //è un evento del modello che viene attivato prima che un prodotto venga eliminato.
+            // Soft delete su tutti gli order_items associati al prodotto
+            $product->orderItems()->delete();
+
+            // Controlla gli ordini associati e li elimina se non hanno più prodotti attivi
+            foreach ($product->orders as $order) {
+                if ($order->products()->count() == 0) {
+                    $order->delete(); // Soft delete dell'ordine
+                }
+            }
+        });
+    }
 }

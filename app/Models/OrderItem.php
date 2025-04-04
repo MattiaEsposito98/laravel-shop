@@ -3,16 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrderItem extends Model
 {
-    public function orders()
+    use SoftDeletes;
+
+    protected $fillable = ['order_id', 'product_id', 'quantity', 'price'];
+
+    // Relazione corretta con Order (un orderItem appartiene a un ordine)
+    public function order()
     {
         return $this->belongsTo(Order::class);
     }
 
-    public function products()
+    // Relazione corretta con Product (un orderItem appartiene a un prodotto)
+    public function product()
     {
-        return $this->belongsToMany(Product::class, 'order_items', 'order_id', 'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

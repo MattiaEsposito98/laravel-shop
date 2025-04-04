@@ -4,12 +4,12 @@
     <div class="container my-5 border">
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="display-4">{{ $product->name }}</h1>
-            <div>
-                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-lg">Modifica</a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn">Modifica</a>
                 <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger">Elimina</button>
+                    <button type="submit" class="btn btn-danger">Elimina</button>
                 </form>
             </div>
 
