@@ -25,3 +25,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('/dashboard-admin', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('products', ShopController::class);
 });
+
+Route::get('/', function () {
+    return view('auth.login');
+});
