@@ -2,11 +2,73 @@
     <div class="container-sm d-flex justify-content-between align-items-center">
         <div>
             {{-- Profilo --}}
-            <a class="me-4" href="{{ route('profile.edit') }}">
-                <i class="fa-solid fa-user me-2"></i>{{ Auth::user()->name }}
-            </a>
-            <a href="{{ route('products.create') }}" class="btn btn-secondary">Aggiungi prodotto</a>
+            <div class="dropdown-container">
+                {{-- <label for="dropdown" class="dropdown-label">{{ Auth::user()->name }}</label> --}}
+                <select name="dropdown" id="dropdown" class="styled-dropdown dropdown-label"
+                    onchange="handleDropdownChange(this)">
+                    <option value="" disabled selected>{{ Auth::user()->name }}</option>
+                    <option value="{{ route('profile.edit') }}">👤 Profilo</option>
+                    <option value="{{ route('products.eliminated') }}">🗑️ Prodotti eliminati</option>
+                    <option value="{{ route('products.create') }}">➕ Aggiungi prodotto</option>
+                </select>
+            </div>
+
+            <script>
+                function handleDropdownChange(dropdown) {
+                    const value = dropdown.value;
+
+                    if (value) {
+                        window.location.href = value; // Reindirizza alla pagina selezionata
+                    }
+                }
+            </script>
+
+            <style>
+                /* Stile per il contenitore del menù */
+                .dropdown-container {
+                    max-width: 300px;
+                    margin: 20px auto;
+                    font-family: Arial, sans-serif;
+                }
+
+                /* Etichetta del dropdown */
+                .dropdown-label {
+                    display: block;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    color: #333;
+                    margin-bottom: 8px;
+                }
+
+                /* Stile del select */
+                .styled-dropdown {
+                    text-align: center;
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    background: #dfcb1a;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                }
+
+                /* Cambiamento colore al passaggio del mouse */
+                .styled-dropdown:hover {
+                    border-color: #007bff;
+                }
+
+                /* Indicatore a freccia personalizzato */
+                .styled-dropdown:focus {
+                    outline: none;
+                    border-color: #007bff;
+                    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+                }
+            </style>
         </div>
+
 
         {{-- Logo --}}
         <a class="navbar-brand ms-4 fs-5 border border-dark rounded-circle p-3"
