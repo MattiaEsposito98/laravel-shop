@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Storage;
 
 class ShopController extends Controller
@@ -137,10 +138,11 @@ class ShopController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
 
+        $query = $request->input('query');
         // Cerca nei campi 'name' o anche 'description' se vuoi
-        $products = Product::where('name', 'LIKE', "%{$query}%")
+        $products = Product::withTrashed()
+            ->where('name', 'LIKE', "%{$query}%")
             ->paginate(9) //usare paginate altrimenti non supporta  links()
             ->withQueryString(); // mantiene il ?query= nell'URL anche quando cambi pagina
 
