@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ShopController;
+use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +34,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 Route::get('/', function () {
     return view('auth.login');
 });
+
+//Api
+Route::apiResource('api/products', ProductsController::class);
