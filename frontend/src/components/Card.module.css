@@ -1,0 +1,18 @@
+.card {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: auto; 
+  width: 100%;
+}
+
+.img {
+  width: 100%;
+  height: 200px;
+  object-fit:fill;
+}
+
+.cardDetails {
+background-color: cadetblue;
+}
