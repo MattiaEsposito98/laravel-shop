@@ -20,14 +20,15 @@ export default function Homepage() {
 
   return (
     <div className="container d-flex flex-column min-vh-100 ">
-      <div className="row flex-grow-1">
+      <div className="row flex-grow-1 justify-content-center  align-items-start">
         {currentProducts.map(product => (
-          <div className="col-md-4 mb-3" key={product.id}>
+          <div className="col-lg-4 col-sm-6 mb-3 d-flex justify-content-center" key={product.id}>
             <Card product={product} />
           </div>
         ))}
       </div>
-      <div className="pagination justify-content-center">
+
+      <div className="pagination justify-content-center mb-3">
         {Array.from({ length: totalPages }, (_, index) => index + 1).map(number => (
           <button
             key={number}
