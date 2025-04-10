@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 
 class ProductsController extends Controller
 {
@@ -50,5 +53,38 @@ class ProductsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function register(Request $request)
+    {
+        try {
+            // Valida i dati ricevuti
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6|confirmed',
+            ]);
+
+            // Crea un nuovo utente
+            $user = User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+            ]);
+
+            // Restituisci una risposta JSON
+            return response()->json([
+                'success' => true,
+                'message' => 'Registrazione completata con successo!',
+                'data' => $user,
+            ], 201);
+
+            // In caso di errore:
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nella registrazione: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }
