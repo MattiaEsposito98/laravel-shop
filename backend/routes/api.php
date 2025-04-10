@@ -1,6 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductsController;
-use Illuminate\Routing\Route;
 
-Route::apiResource('api/products', ProductsController::class);
+
+Route::apiResource('products', ProductsController::class);
