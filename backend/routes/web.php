@@ -4,9 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -18,22 +16,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Assicurati che questa riga sia presente e corretta
 require __DIR__ . '/auth.php';
 
-
 // Rotte per Admin
-Route::middleware(['auth', IsAdmin::class])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard-admin', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('products', ShopController::class);
-
-    //Rotta per i prodotti elimanti
     Route::get('eliminated_products', [ShopController::class, 'eliminated'])->name('products.eliminated');
-    Route::get('search_prduct', [ShopController::class, 'search'])->name('products.search');
+    Route::get('search_product', [ShopController::class, 'search'])->name('products.search');
 });
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
-//Api
-Route::apiResource('api/products', ProductsController::class);
+// API
+// Route::apiResource('api/products', ProductsController::class);
