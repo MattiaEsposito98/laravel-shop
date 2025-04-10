@@ -37,12 +37,18 @@ export default function GlobalProvider({ children }) {
   async function login(email, password) {
     try {
       await axios.get("/sanctum/csrf-cookie"); // richiede il cookie CSRF
-      await axios.post("/login", { email, password });
-      await getUser(); // aggiorna stato user
+      const response = await axios.post("/login", { email, password });
+
+      if (response.status === 200) {
+        await getUser(); // aggiorna stato user
+        return response.data; // Restituisci i dati se necessario
+      }
     } catch (error) {
-      throw error;
+      console.error("Errore durante il login:", error);
+      throw new Error(error.response?.data?.message || "Errore di login"); // Fornisci messaggio di errore utile
     }
   }
+
 
   async function logout() {
     try {

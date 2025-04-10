@@ -17,7 +17,6 @@ function App() {
       <GlobalProvider>
         <BrowserRouter>
           <Routes>
-
             <Route path='/' Component={DefaultLayout}>
               <Route index Component={Homepage}></Route>
               <Route path="/login" Component={Login}></Route>

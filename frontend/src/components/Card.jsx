@@ -1,4 +1,4 @@
-import placeholder from "../../public/placeholder.png"
+const placeholder = '/placeholder.png'; // Usa questo URL direttamente
 
 export default function Card({ product }) {
 
