@@ -30,6 +30,3 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/', function () {
     return view('auth.login');
 });
-
-// API
-// Route::apiResource('api/products', ProductsController::class);

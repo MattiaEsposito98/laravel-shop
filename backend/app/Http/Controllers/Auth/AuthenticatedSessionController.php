@@ -31,6 +31,16 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('products.index');
     }
 
+    // public function store(LoginRequest $request)
+    // {
+    //     $request->authenticate();
+
+    //     $request->session()->regenerate();
+
+    //     return response()->json(['message' => 'Login effettuato con successo!'], 200);
+    // }
+
+
     /**
      * Destroy an authenticated session.
      */
