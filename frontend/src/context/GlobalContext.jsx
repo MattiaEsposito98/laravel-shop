@@ -6,6 +6,7 @@ export const GlobalContext = createContext();
 export default function GlobalProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
+  const [cart, setCart] = useState([])
 
   axios.defaults.withCredentials = true;
   axios.defaults.baseURL = 'http://localhost:8000';
@@ -83,6 +84,22 @@ export default function GlobalProvider({ children }) {
     console.log("Utente aggiornato:", user);
   }, [user]);
 
+  // Funzioni per il carello
+  // Aggiungere
+  function addToCart(product) {
+    setCart(prevCart => [...prevCart, product])
+  }
+
+  // Funzione per rimuovere un prodotto dal carrello
+  function removeFromCart(productId) {
+    setCart((prevCart) => prevCart.filter(item => item.id !== productId));
+  };
+
+  // Funzione per svuotare il carrello
+  function clearCart() {
+    setCart([]);
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -93,6 +110,10 @@ export default function GlobalProvider({ children }) {
         login,
         logout,
         getUser,
+        cart,
+        addToCart,
+        removeFromCart,
+        clearCart
       }}
     >
       {children}

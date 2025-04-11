@@ -3,7 +3,7 @@ import { GlobalContext } from "../context/GlobalContext";
 import { Link } from "react-router-dom";
 
 export default function Header() {
-  const { user, logout } = useContext(GlobalContext);
+  const { user, logout, cart } = useContext(GlobalContext);
 
   return (
     <nav className="navbar navbar-expand-lg bg-info">
@@ -44,8 +44,15 @@ export default function Header() {
               </ul>
             </li>
             <li className="nav-item">
-              <a className="nav-link disabled">Carrello</a>
+              <Link to="/cart" className="nav-link position-relative">
+                Carrello
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {cart.length}
+                  <span className="visually-hidden">carrelli</span> {/* Per l'accessibilità */}
+                </span>
+              </Link>
             </li>
+
           </ul>
           <form className="d-flex" role="search">
             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
