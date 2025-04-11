@@ -27,7 +27,7 @@ export default function Header() {
 
             {user && (
               <li className="nav-item">
-                <button className="nav-link btn btn-link" onClick={() => { logout(); console.log("Logout cliccato"); }}>
+                <button className="nav-link btn btn-link" onClick={() => { logout() }}>
                   Logout
                 </button>
               </li>
@@ -38,13 +38,13 @@ export default function Header() {
               </a>
               <ul className="dropdown-menu">
                 <li><a className="dropdown-item" href="#">Action</a></li>
-                <li><a className="dropdown-item" href="#">Another action</a></li>
+                <li><Link to={"/register"} className="dropdown-item" >Registrati</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><a className="dropdown-item" href="#">Something else here</a></li>
               </ul>
             </li>
             <li className="nav-item">
-              <a className="nav-link disabled" aria-disabled="true">Disabled</a>
+              <a className="nav-link disabled">Carrello</a>
             </li>
           </ul>
           <form className="d-flex" role="search">
