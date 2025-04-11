@@ -6,23 +6,26 @@ export const GlobalContext = createContext();
 export default function GlobalProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]);
 
   axios.defaults.withCredentials = true;
   axios.defaults.baseURL = 'http://localhost:8000';
 
   // Effettua il fetch dei prodotti all'avvio
   useEffect(() => {
-    fetchProducts(); // Carica i prodotti quando il componente viene montato
+    fetchProducts();
   }, []);
 
   // Recupera l'utente salvato o prova a recuperarlo dal server
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser)); // Recupera l'utente salvato
+    const token = localStorage.getItem("token");
+    console.log("Token durante il recupero:", token); // Log del token
+
+    if (savedUser && token) {
+      setUser(JSON.parse(savedUser));
     } else {
-      getUser(); // Prova a recuperare l'utente dal server
+      getUser();
     }
   }, []);
 
@@ -32,7 +35,7 @@ export default function GlobalProvider({ children }) {
       const res = await axios.get("/api/products");
       setProducts(res.data.data);
     } catch (err) {
-      console.error(err);
+      console.error("Errore nel fetch dei prodotti:", err);
     }
   }
 
@@ -40,10 +43,10 @@ export default function GlobalProvider({ children }) {
   async function getUser() {
     try {
       const res = await axios.get("/api/user");
-      setUser(res.data); // Aggiorna lo stato dell'utente
-      console.log("Utente recuperato:", res.data); // Log dei dati recuperati
+      setUser(res.data);
+      console.log("Utente recuperato:", res.data);
     } catch (error) {
-      setUser(null); // Se non è loggato o c'è errore
+      setUser(null);
       console.error("Errore nel recupero dell'utente:", error);
     }
   }
@@ -51,52 +54,55 @@ export default function GlobalProvider({ children }) {
   // Funzione per effettuare il login
   const login = async (email, password) => {
     try {
+      await axios.get('/sanctum/csrf-cookie');
       const response = await axios.post('/api/login', { email, password });
       setUser(response.data.user);
-      localStorage.setItem("token", response.data.token); // Salva il token
-      localStorage.setItem("user", JSON.stringify(response.data.user)); // Salva l'utente
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
-      console.error("Errore durante il login:", error);
+      console.error("Errore durante il login:", error.response || error.message);
     }
   };
 
   // Funzione per effettuare il logout
   const logout = async () => {
+    if (!user) {
+      console.error("Utente non autenticato, impossibile effettuare il logout.");
+      return;
+    }
+
     try {
-      // Aggiungi il token di accesso nell'intestazione di autorizzazione
-      const token = localStorage.getItem("token"); // Assicurati di avere il token salvato
+      const token = localStorage.getItem("token");
+      console.log("Token durante il logout:", token); // Log per debug
       await axios.post('/api/logout', {}, {
         headers: {
-          Authorization: `Bearer ${token}` // Includi il token nell'intestazione
+          Authorization: `Bearer ${token}`
         }
       });
-      setUser(null); // Resetta lo stato dell'utente
-      localStorage.removeItem("user"); // Rimuovi l'utente dai dati locali
-      localStorage.removeItem("token"); // Rimuovi il token dai dati locali
+      setUser(null);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       console.log("Logout effettuato con successo");
     } catch (error) {
-      console.error("Errore durante il logout:", error);
+      console.error("Errore durante il logout:", error.response || error.message);
+    } finally {
+      // Assicurati che tutti i dati siano stati eliminati
+      setUser(null);
+      localStorage.clear();
+      console.log("Dati utente e token rimossi dal sistema.");
     }
   };
 
-  // Log dell'utente aggiornato
-  useEffect(() => {
-    console.log("Utente aggiornato:", user);
-  }, [user]);
-
-  // Funzioni per il carello
-  // Aggiungere
-  function addToCart(product) {
-    setCart(prevCart => [...prevCart, product])
-  }
-
-  // Funzione per rimuovere un prodotto dal carrello
-  function removeFromCart(productId) {
-    setCart((prevCart) => prevCart.filter(item => item.id !== productId));
+  // Funzioni per il carrello
+  const addToCart = (product) => {
+    setCart(prevCart => [...prevCart, product]);
   };
 
-  // Funzione per svuotare il carrello
-  function clearCart() {
+  const removeFromCart = (productId) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+  };
+
+  const clearCart = () => {
     setCart([]);
   };
 

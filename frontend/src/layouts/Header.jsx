@@ -46,7 +46,7 @@ export default function Header() {
             <li className="nav-item">
               <Link to="/cart" className="nav-link position-relative">
                 Carrello
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span className="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
                   {cart.length}
                   <span className="visually-hidden">carrelli</span> {/* Per l'accessibilità */}
                 </span>

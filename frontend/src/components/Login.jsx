@@ -8,32 +8,29 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { user, setUser } = useContext(GlobalContext)
+  const { setUser } = useContext(GlobalContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      // Richiedi il cookie CSRF
       await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-
-      // Effettua il login
       const response = await axios.post('http://localhost:8000/api/login', {
         email,
         password
       });
 
       console.log('Login effettuato:', response.data.user);
-      setUser(response.data.user); // Imposta l'utente nello stato
-      navigate('/'); // Redirect dopo il login
+      setUser(response.data.user);
+      localStorage.setItem("token", response.data.token); // Salva il token
+      localStorage.setItem("user", JSON.stringify(response.data.user)); // Salva l'utente
+      navigate('/');
 
     } catch (err) {
-      console.error("Errore durante il login:", err);
+      console.error("Errore durante il login:", err.response || err.message);
       setError('Credenziali errate o errore di rete.');
     }
   };
-
-
 
   return (
     <>
