@@ -7,32 +7,43 @@ export default function GlobalProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
 
-  // Impostazioni globali di axios per includere i cookie
   axios.defaults.withCredentials = true;
   axios.defaults.baseURL = 'http://localhost:8000';
 
   useEffect(() => {
-    fetchProducts();
-    getUser(); // verifica se l'utente è già loggato (cookie esistente)
+    fetchProducts(); // Carica i prodotti quando il componente viene montato
+  }, [user]);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser)); // Recupera l'utente salvato
+    } else {
+      getUser(); // Prova a recuperare l'utente dal server
+    }
   }, []);
 
-  function fetchProducts() {
-    axios
-      .get("/api/products")
-      .then((res) => {
-        setProducts(res.data.data);
-      })
-      .catch((err) => console.error(err));
+
+  async function fetchProducts() {
+    try {
+      const res = await axios.get("/api/products");
+      setProducts(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function getUser() {
     try {
       const res = await axios.get("/api/user");
-      setUser(res.data);
+      setUser(res.data); // Aggiorna lo stato dell'utente
+      console.log("Utente recuperato:", res.data); // Log dei dati recuperati
     } catch (error) {
-      setUser(null); // se non è loggato o c'è errore
+      setUser(null); // Se non è loggato o c'è errore
+      console.error("Errore nel recupero dell'utente:", error);
     }
   }
+
 
   async function login(email, password) {
     try {
@@ -40,24 +51,37 @@ export default function GlobalProvider({ children }) {
       const response = await axios.post("/login", { email, password });
 
       if (response.status === 200) {
-        await getUser(); // aggiorna stato user
+        console.log("Login effettuato:", response.data.user); // Log dei dati dell'utente
+        setUser(response.data.user); // Imposta l'utente nello stato
         return response.data; // Restituisci i dati se necessario
       }
     } catch (error) {
       console.error("Errore durante il login:", error);
-      throw new Error(error.response?.data?.message || "Errore di login"); // Fornisci messaggio di errore utile
+      throw new Error(error.response?.data?.message || "Errore di login");
     }
   }
 
 
   async function logout() {
+    if (!user) {
+      console.error("Nessun utente autenticato, impossibile effettuare il logout");
+      return;
+    }
     try {
-      await axios.post("/logout");
-      setUser(null);
+      await axios.get("/sanctum/csrf-cookie"); // Richiesta del cookie CSRF
+      await axios.post("/api/logout"); // Logout
+      setUser(null); // Resetta lo stato dell'utente nel contesto
+      console.log("Logout effettuato con successo");
     } catch (error) {
-      console.error(error);
+      console.error("Errore durante il logout:", error);
     }
   }
+
+
+  useEffect(() => {
+    console.log("Utente aggiornato:", user); // Aggiungi questo log
+  }, [user]);
+
 
   return (
     <GlobalContext.Provider
@@ -65,6 +89,7 @@ export default function GlobalProvider({ children }) {
         products,
         fetchProducts,
         user,
+        setUser,
         login,
         logout,
         getUser,

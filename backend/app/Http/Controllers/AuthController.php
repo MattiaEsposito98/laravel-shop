@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class AuthController extends Controller
 {
@@ -25,5 +27,25 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);
+    }
+
+    public function getUser(Request $request)
+    {
+        return $request->user(); // Restituisce i dati dell'utente autenticato
+    }
+
+    public function logout(Request $request)
+    {
+        // Assicurati che l'utente sia autenticato
+        if ($request->user()) {
+            Log::info('Logout richiesto da:', ['user_id' => $request->user()->id]);
+
+            // Invalida il token dell'utente
+            $request->user()->currentAccessToken()->delete();
+
+            return response()->json(['message' => 'Logout effettuato con successo']);
+        } else {
+            return response()->json(['message' => 'Nessun utente autenticato'], 401);
+        }
     }
 }

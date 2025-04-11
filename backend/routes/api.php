@@ -20,3 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // Login
 Route::post('/login', [AuthController::class, 'login']);
+
+// Per l'utente
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
+
+// Login
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
