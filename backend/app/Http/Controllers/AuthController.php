@@ -1,3 +1,5 @@
+<!-- 
+Controller per il login e logout -->
 <?php
 
 namespace App\Http\Controllers;
