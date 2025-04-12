@@ -98,10 +98,12 @@ export default function GlobalProvider({ children }) {
     setCart(prevCart => [...prevCart, product]);
   };
 
+  // Rimuovi
   const removeFromCart = (productId) => {
     setCart(prevCart => prevCart.filter(item => item.id !== productId));
   };
 
+  // Pulisici carello
   const clearCart = () => {
     setCart([]);
   };
