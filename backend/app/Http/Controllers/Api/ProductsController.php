@@ -36,7 +36,22 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Recupera il prodotto in base all'id
+        $product = Product::find($id);
+
+        // Verifica se il prodotto esiste
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Prodotto non trovato'
+            ], 404);
+        }
+
+        // Restituisci i dettagli del prodotto
+        return response()->json([
+            'success' => true,
+            'data' => $product
+        ]);
     }
 
     /**

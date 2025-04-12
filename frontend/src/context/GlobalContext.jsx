@@ -24,6 +24,8 @@ export default function GlobalProvider({ children }) {
 
     if (savedUser && token) {
       setUser(JSON.parse(savedUser));
+      // Recupera il carrello dell'utente autenticato
+      fetchCart(token);
     } else {
       getUser();
     }
@@ -93,19 +95,74 @@ export default function GlobalProvider({ children }) {
     }
   };
 
-  // Funzioni per il carrello
-  const addToCart = (product) => {
-    setCart(prevCart => [...prevCart, product]);
+  // Funzione per recuperare il carrello
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get('/api/cart-items', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const cartItems = response.data;
+
+      // Recupera i dettagli del prodotto per ogni articolo del carrello
+      const updatedCart = await Promise.all(cartItems.map(async (item) => {
+        const productResponse = await axios.get(`/api/products/${item.product_id}`);
+        return {
+          ...item,
+          product: productResponse.data, // Aggiungi i dettagli del prodotto
+        };
+      }));
+
+      setCart(updatedCart); // Popola il carrello con i dettagli dei prodotti
+    } catch (error) {
+      console.error('Errore nel recupero del carrello:', error);
+    }
+  };
+  // Funzioni aggiungere prodotti al carrello
+  const addToCart = async (product) => {
+    try {
+      const response = await axios.post(
+        '/api/cart-items',
+        { product_id: product.id, quantity: 1 },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log("Prodotto aggiunto al carrello:", response.data);
+      setCart(prevCart => [...prevCart, response.data]); // Aggiungi l'articolo al carrello locale
+      alert('Prodotto aggiunto al carrello')
+    } catch (err) {
+      console.error("Errore nell'aggiungere al carrello:", err);
+    }
   };
 
-  // Rimuovi
-  const removeFromCart = (productId) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+  // Rimuovi prodotti
+  const removeFromCart = async (productId) => {
+    try {
+      const response = await axios.delete(
+        `/api/cart-items/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: 'application/json',
+          },
+        }
+      );
+      console.log("Prodotto rimosso dal carrello:", response.data);
+      setCart(prevCart => prevCart.filter(item => item.id !== productId)); // Rimuovi l'articolo dal carrello locale
+    } catch (err) {
+      console.error("Errore nel rimuovere dal carrello:", err);
+    }
   };
 
-  // Pulisici carello
+  // Pulisci carello
   const clearCart = () => {
-    setCart([]);
+    setCart([]); // Pulisce il carrello in locale
   };
 
   return (
@@ -118,6 +175,7 @@ export default function GlobalProvider({ children }) {
         login,
         logout,
         getUser,
+        fetchCart,
         cart,
         addToCart,
         removeFromCart,

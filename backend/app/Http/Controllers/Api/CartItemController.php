@@ -9,6 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 class CartItemController extends Controller
 {
+
+    public function index()
+    {
+        $user = Auth::user();
+
+        // Recupera tutti gli articoli del carrello dell'utente autenticato
+        $cartItems = CartItem::where('user_id', $user->id)->get();
+
+        return response()->json($cartItems);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
+import axios from "axios";
 
 const placeholder = '/placeholder.png'; // Usa questo URL direttamente
 
@@ -7,11 +8,11 @@ export default function Card({ product }) {
   const { addToCart } = useContext(GlobalContext)
   const { user } = useContext(GlobalContext)
 
+
   const handleAddToCart = () => {
-    console.log("Prodotto prima dell'aggiunta al carrello:", product); // Log del prodotto
-    addToCart(product); // Aggiungi il prodotto al carrello
-    console.log(`${product.name} aggiunto al carrello`);
+    addToCart(product); // Aggiunge il prodotto al carrello
   };
+
 
   return (
 
@@ -23,7 +24,8 @@ export default function Card({ product }) {
         <p className="card-text"><strong>Prezzo:</strong> {product.price}€</p>
         <a
           className={`btn btn-primary ${!user ? 'pointer-events-none opacity-50' : ''}`}
-          onClick={user ? handleAddToCart : undefined} title={!user ? 'Accedi per aggiungere al carello' : ''}
+          onClick={user ? handleAddToCart : undefined}
+          title={!user ? 'Accedi per aggiungere al carello' : ''}
         >
           Aggiungi al carrello
         </a>

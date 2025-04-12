@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CartItemController;
+use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\AuthController;
@@ -29,4 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 //Aggiungere prdotti al carello
+Route::middleware('auth:sanctum')->get('/cart-items', [CartItemController::class, 'index']);
 Route::middleware('auth:sanctum')->post('/cart-items', [CartItemController::class, 'store']);
+
+// Route per creare un ordine
+Route::post('/order', [OrderController::class, 'store']);
