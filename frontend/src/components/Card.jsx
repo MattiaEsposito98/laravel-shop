@@ -5,6 +5,7 @@ const placeholder = '/placeholder.png'; // Usa questo URL direttamente
 
 export default function Card({ product }) {
   const { addToCart } = useContext(GlobalContext)
+  const { user } = useContext(GlobalContext)
 
   const handleAddToCart = () => {
     console.log("Prodotto prima dell'aggiunta al carrello:", product); // Log del prodotto
@@ -20,7 +21,12 @@ export default function Card({ product }) {
       <div className="card-body d-flex flex-column justify-content-between">
         <h5 className="card-title">{product.name}</h5>
         <p className="card-text"><strong>Prezzo:</strong> {product.price}€</p>
-        <a className="btn btn-primary" onClick={handleAddToCart}>Aggiungi al carello</a>
+        <a
+          className={`btn btn-primary ${!user ? 'pointer-events-none opacity-50' : ''}`}
+          onClick={user ? handleAddToCart : undefined} title={!user ? 'Accedi per aggiungere al carello' : ''}
+        >
+          Aggiungi al carrello
+        </a>
       </div>
     </div>
 

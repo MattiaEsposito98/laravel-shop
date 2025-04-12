@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
-    // Questo dice a Laravel: "Va bene se assegni questi campi in massa (es. con CartItem::create([...]))."
+    // Serve per permettere di assegnare campi al modello CartItem
     protected $fillable = [
         'user_id',
         'product_id',
