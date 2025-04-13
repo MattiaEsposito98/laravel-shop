@@ -6,19 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CartItemController extends Controller
 {
 
     public function index()
     {
-        $user = Auth::user();
+        try {
+            $user = auth()->user();
+            Log::info('Utente:', ['user' => $user]);
 
-        // Recupera tutti gli articoli del carrello dell'utente autenticato
-        $cartItems = CartItem::where('user_id', $user->id)->get();
+            $cartItems = CartItem::with('product')
+                ->where('user_id', $user->id)
+                ->get();
 
-        return response()->json($cartItems);
+            return response()->json($cartItems);
+        } catch (\Exception $e) {
+            Log::error('Errore nel recupero carrello: ' . $e->getMessage());
+            return response()->json(['error' => 'Errore interno'], 500);
+        }
     }
+
+
 
     public function store(Request $request)
     {

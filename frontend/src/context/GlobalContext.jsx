@@ -16,6 +16,7 @@ export default function GlobalProvider({ children }) {
     fetchProducts();
   }, []);
 
+
   // Recupera l'utente salvato o prova a recuperarlo dal server
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -31,6 +32,7 @@ export default function GlobalProvider({ children }) {
     }
   }, []);
 
+
   // Funzione per fetchare i prodotti
   async function fetchProducts() {
     try {
@@ -40,6 +42,7 @@ export default function GlobalProvider({ children }) {
       console.error("Errore nel fetch dei prodotti:", err);
     }
   }
+
 
   // Funzione per recuperare l'utente
   async function getUser() {
@@ -53,6 +56,7 @@ export default function GlobalProvider({ children }) {
     }
   }
 
+
   // Funzione per effettuare il login
   const login = async (email, password) => {
     try {
@@ -61,10 +65,13 @@ export default function GlobalProvider({ children }) {
       setUser(response.data.user);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      fetchCart();
     } catch (error) {
       console.error("Errore durante il login:", error.response || error.message);
     }
   };
+
 
   // Funzione per effettuare il logout
   const logout = async () => {
@@ -95,6 +102,7 @@ export default function GlobalProvider({ children }) {
     }
   };
 
+
   // Funzione per recuperare il carrello
   const fetchCart = async () => {
     try {
@@ -103,26 +111,19 @@ export default function GlobalProvider({ children }) {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      const cartItems = response.data;
 
-      // Recupera i dettagli del prodotto per ogni articolo del carrello
-      const updatedCart = await Promise.all(cartItems.map(async (item) => {
-        const productResponse = await axios.get(`/api/products/${item.product_id}`);
-        return {
-          ...item,
-          product: productResponse.data, // Aggiungi i dettagli del prodotto
-        };
-      }));
-
-      setCart(updatedCart); // Popola il carrello con i dettagli dei prodotti
+      // Ora ogni item ha già product
+      setCart(response.data);
     } catch (error) {
       console.error('Errore nel recupero del carrello:', error);
     }
   };
+
+
   // Funzioni aggiungere prodotti al carrello
   const addToCart = async (product) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         '/api/cart-items',
         { product_id: product.id, quantity: 1 },
         {
@@ -133,18 +134,20 @@ export default function GlobalProvider({ children }) {
           },
         }
       );
-      console.log("Prodotto aggiunto al carrello:", response.data);
-      setCart(prevCart => [...prevCart, response.data]); // Aggiungi l'articolo al carrello locale
-      alert('Prodotto aggiunto al carrello')
+      console.log("Prodotto aggiunto al carrello");
+
+      await fetchCart();
+      alert('Prodotto aggiunto al carrello');
     } catch (err) {
       console.error("Errore nell'aggiungere al carrello:", err);
     }
   };
 
+
   // Rimuovi prodotti
   const removeFromCart = async (productId) => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `/api/cart-items/${productId}`,
         {
           headers: {
@@ -153,12 +156,15 @@ export default function GlobalProvider({ children }) {
           },
         }
       );
-      console.log("Prodotto rimosso dal carrello:", response.data);
-      setCart(prevCart => prevCart.filter(item => item.id !== productId)); // Rimuovi l'articolo dal carrello locale
+      console.log("Prodotto rimosso dal carrello");
+
+      // 🔁 Aggiorna il carrello
+      await fetchCart();
     } catch (err) {
       console.error("Errore nel rimuovere dal carrello:", err);
     }
   };
+
 
   // Pulisci carello
   const clearCart = () => {
