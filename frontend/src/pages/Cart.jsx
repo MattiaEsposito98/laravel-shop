@@ -4,7 +4,7 @@ import CardCart from "../components/CardCart";
 import axios from "axios";
 
 export default function Cart() {
-  const { cart, removeFromCart, clearCart } = useContext(GlobalContext);
+  const { cart, removeFromCart, clearCart, fetchCart } = useContext(GlobalContext);
   console.log("Cart:", cart);
 
   // Funzione per calcolare il totale
@@ -39,25 +39,33 @@ export default function Cart() {
   };
 
   const handleBuy = async () => {
-    const token = localStorage.getItem("token");
-    const totalPrice = calculateTotalPrice(cart); // Funzione che calcola il prezzo totale
+    let text = 'Sei sicuro dell\'acquisto';
+    if (confirm(text) == true) {
+      const token = localStorage.getItem("token");
+      const totalPrice = calculateTotalPrice(cart);
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/order",
-        { total_price: totalPrice }, // Passa il total_price calcolato
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Ordine creato:", response.data);
-    } catch (err) {
-      console.error("Errore nella creazione dell'ordine:", err.response ? err.response.data : err.message);
-    }
-  };
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/order",
+          { total_price: totalPrice },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Ordine creato:", response.data);
+
+        clearCart();     // svuota il carrello nella UI
+        fetchCart();     // aggiorna i dati con quelli da backend
+      } catch (err) {
+        console.error("Errore nella creazione dell'ordine:", err.response ? err.response.data : err.message);
+      }
+    } else return
+  }
+
+
 
   return (
     <div className="container">

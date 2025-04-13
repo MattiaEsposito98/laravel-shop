@@ -27,7 +27,8 @@ class OrderController extends Controller
         // Crea l'ordine
         $order = new Order();
         $order->user_id = $user->id;
-        $order->total_price = $totalPrice;
+        $order->total = $totalPrice;
+        $order->status = 'completato';
         $order->save();
 
         // Aggiungi gli articoli all'ordine
@@ -36,6 +37,7 @@ class OrderController extends Controller
             $orderItem->order_id = $order->id;
             $orderItem->product_id = $item->product_id;
             $orderItem->quantity = $item->quantity;
+            $orderItem->price = $item->product->price;
             $orderItem->save();
         }
 
