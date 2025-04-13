@@ -1,27 +1,51 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import CardCart from "../components/CardCart";
 import axios from "axios";
 
 export default function Cart() {
   const { cart, removeFromCart, clearCart } = useContext(GlobalContext);
-
   console.log("Cart:", cart);
 
   // Funzione per calcolare il totale
-  const calculateTotalPrice = () =>
-    Array.isArray(cart)
-      ? cart.reduce((sum, item) => sum + (parseFloat(item.product?.price || 0) * item.quantity), 0)
-      : 0;
+  const calculateTotalPrice = (cart) => {
+    if (!Array.isArray(cart)) return 0;
+
+    return cart.reduce((total, item) => {
+      const price = parseFloat(item.product?.price ?? 0);
+      return total + price * item.quantity;
+    }, 0);
+  };
+
+  // Funzione per svuotare il carrello
+  const handleClearCart = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Effettua la richiesta per svuotare il carrello
+      const response = await axios.delete('http://localhost:8000/api/clear-cart', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      console.log('Carrello svuotato:', response.data);
+      // Puoi anche chiamare clearCart dal context per rimuoverlo dalla UI
+      clearCart();
+    } catch (err) {
+      console.error('Errore durante lo svuotamento del carrello:', err.response ? err.response.data : err.message);
+    }
+  };
 
   const handleBuy = async () => {
     const token = localStorage.getItem("token");
-    const totalPrice = calculateTotalPrice();
+    const totalPrice = calculateTotalPrice(cart); // Funzione che calcola il prezzo totale
 
     try {
       const response = await axios.post(
         "http://localhost:8000/api/order",
-        { total_price: totalPrice },
+        { total_price: totalPrice }, // Passa il total_price calcolato
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -31,21 +55,17 @@ export default function Cart() {
       );
       console.log("Ordine creato:", response.data);
     } catch (err) {
-      console.error(
-        "Errore nella creazione dell'ordine:",
-        err.response ? err.response.data : err.message
-      );
+      console.error("Errore nella creazione dell'ordine:", err.response ? err.response.data : err.message);
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Carrello</h1>
-
-      {cart.length === 0 ? (
-        <p>Il carrello è vuoto.</p>
-      ) : (
-        <>
+    <div className="container">
+      <h1>Carrello</h1>
+      <div className="row">
+        {cart.length === 0 ? (
+          <p>Il carrello è vuoto</p>
+        ) : (
           <ul className="list-group">
             {cart.map((item) => (
               <li key={item.id} className="list-group-item mb-2">
@@ -53,17 +73,18 @@ export default function Cart() {
               </li>
             ))}
           </ul>
-
-          <div className="mt-4 mb-3">
-            <h4>Totale: {calculateTotalPrice().toFixed(2)} €</h4>
-            <button className="btn btn-secondary me-2" onClick={clearCart}>
+        )}
+      </div>
+      {cart.length > 0 && (
+        <div>
+          <div className="d-flex gap-2">
+            <button className="btn btn-secondary" onClick={handleClearCart}>
               Svuota Carrello
             </button>
-            <button className="btn btn-primary " onClick={handleBuy}>
-              Compra
-            </button>
+            <button className="btn btn-secondary" onClick={handleBuy}>Compra</button>
           </div>
-        </>
+          <h3>Totale: {calculateTotalPrice(cart)}€</h3>
+        </div>
       )}
     </div>
   );

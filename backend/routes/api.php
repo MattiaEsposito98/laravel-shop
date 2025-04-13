@@ -35,3 +35,6 @@ Route::middleware('auth:sanctum')->post('/cart-items', [CartItemController::clas
 
 // Route per creare un ordine
 Route::post('/order', [OrderController::class, 'store']);
+
+// Rotta per svuotare carrello
+Route::delete('/clear-cart', [CartItemController::class, 'clearCart'])->middleware('auth:sanctum');

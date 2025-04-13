@@ -60,4 +60,24 @@ class CartItemController extends Controller
 
         return response()->json($cartItem, 201);
     }
+
+    public function clearCart()
+    {
+        try {
+            $user = auth()->user(); // Ottieni l'utente autenticato
+
+            // Verifica che l'utente sia autenticato
+            if (!$user) {
+                return response()->json(['error' => 'Utente non autenticato'], 401);
+            }
+
+            // Elimina tutti gli articoli nel carrello per l'utente autenticato
+            CartItem::where('user_id', $user->id)->delete();
+
+            return response()->json(['message' => 'Carrello svuotato con successo'], 200);
+        } catch (\Exception $e) {
+            Log::error('Errore durante lo svuotamento del carrello: ' . $e->getMessage());
+            return response()->json(['error' => 'Errore interno'], 500);
+        }
+    }
 }
