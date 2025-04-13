@@ -36,7 +36,7 @@
                     <tr>
                         <th scope="col">Acquirente</th>
                         <th scope="col">ID Ordine</th>
-                        <th scope="col">Totale</th>
+                        <th scope="col">Totale dell'ordine</th>
                         <th scope="col">Stato</th>
                     </tr>
                 </thead>
