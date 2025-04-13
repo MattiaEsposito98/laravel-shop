@@ -62,6 +62,18 @@ class CartItemController extends Controller
         return response()->json($cartItem, 201);
     }
 
+    // Rimuove un prodotto dal carrello
+    public function removeFromCart($id)
+    {
+        $user = auth()->user();
+        $cartItem = CartItem::where('user_id', $user->id)
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $cartItem->delete();
+        return response()->json(['message' => 'Prodotto rimosso dal carrello']);
+    }
+
 
     // Pulire il carello 
     public function clearCart()

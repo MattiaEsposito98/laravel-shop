@@ -34,7 +34,10 @@ Route::middleware('auth:sanctum')->get('/cart-items', [CartItemController::class
 Route::middleware('auth:sanctum')->post('/cart-items', [CartItemController::class, 'store']);
 
 // Route per creare un ordine
-Route::post('/order', [OrderController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/order', [OrderController::class, 'store']);
+
+// Rotta per rimuovere un singolo prodotto 
+Route::middleware('auth:sanctum')->delete('/cart-items/{id}', [CartItemController::class, 'removeFromCart']);
 
 // Rotta per svuotare carrello
 Route::delete('/clear-cart', [CartItemController::class, 'clearCart'])->middleware('auth:sanctum');

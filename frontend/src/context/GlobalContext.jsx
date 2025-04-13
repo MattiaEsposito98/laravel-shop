@@ -21,16 +21,21 @@ export default function GlobalProvider({ children }) {
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
-    console.log("Token durante il recupero:", token); // Log del token
 
     if (savedUser && token) {
       setUser(JSON.parse(savedUser));
-      // Recupera il carrello dell'utente autenticato
-      fetchCart(token);
     } else {
       getUser();
     }
   }, []);
+
+  // 🔄 Quando l'utente è settato, carica il carrello
+  useEffect(() => {
+    if (user) {
+      fetchCart();
+    }
+  }, [user]);
+
 
 
   // Funzione per fetchare i prodotti
