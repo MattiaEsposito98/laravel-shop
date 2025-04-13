@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 class CartItemController extends Controller
 {
 
+    // Mostra i prodotti nel carello
     public function index()
     {
         try {
@@ -29,7 +30,7 @@ class CartItemController extends Controller
     }
 
 
-
+    // Aggiungere un prodotto al carello
     public function store(Request $request)
     {
         $request->validate([
@@ -61,6 +62,8 @@ class CartItemController extends Controller
         return response()->json($cartItem, 201);
     }
 
+
+    // Pulire il carello 
     public function clearCart()
     {
         try {

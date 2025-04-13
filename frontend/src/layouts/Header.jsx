@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   const { user, logout, cart } = useContext(GlobalContext);
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+
 
   return (
     <nav className="navbar navbar-expand-lg bg-info">
@@ -47,7 +49,7 @@ export default function Header() {
               <Link to="/cart" className="nav-link position-relative">
                 Carrello
                 <span className="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
-                  {cart.length}
+                  {totalItems}
                   <span className="visually-hidden">carrelli</span> {/* Per l'accessibilità */}
                 </span>
               </Link>

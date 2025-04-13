@@ -88,10 +88,15 @@ export default function GlobalProvider({ children }) {
           Authorization: `Bearer ${token}`
         }
       });
-      setUser(null);
+      setUser(null); // Rimuove i dati utente dal contesto
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       console.log("Logout effettuato con successo");
+
+      // Rimuovi il carrello dal contesto
+      clearCart();
+      fetchCart();
+
     } catch (error) {
       console.error("Errore durante il logout:", error.response || error.message);
     } finally {
@@ -101,6 +106,7 @@ export default function GlobalProvider({ children }) {
       console.log("Dati utente e token rimossi dal sistema.");
     }
   };
+
 
 
   // Funzione per recuperare il carrello

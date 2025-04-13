@@ -78,10 +78,10 @@ export default function Cart() {
       {cart.length > 0 && (
         <div>
           <div className="d-flex gap-2">
-            <button className="btn btn-secondary" onClick={handleClearCart}>
+            <button className="btn btn-warning" onClick={handleClearCart}>
               Svuota Carrello
             </button>
-            <button className="btn btn-secondary" onClick={handleBuy}>Compra</button>
+            <button className="btn btn-success" onClick={handleBuy}>Compra</button>
           </div>
           <h3>Totale: {calculateTotalPrice(cart)}€</h3>
         </div>
