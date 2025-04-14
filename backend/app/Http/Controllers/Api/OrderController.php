@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
+
+    public function index()
+    {
+        $orders = Order::with(['products', 'orderItems', 'user'])->paginate(10);
+        return view('products.order', compact('orders'));
+    }
+
+
     public function store(Request $request)
     {
         $user = auth()->user();
