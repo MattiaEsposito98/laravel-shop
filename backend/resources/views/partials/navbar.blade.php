@@ -2,7 +2,7 @@
     <div class="container-sm d-flex justify-content-between align-items-center">
         <div>
             {{-- Profilo --}}
-            <div class="dropdown-container">
+            <div class="dropdown-container d-flex align-items-center gap-3">
                 {{-- <label for="dropdown" class="dropdown-label">{{ Auth::user()->name }}</label> --}}
                 <select name="dropdown" id="dropdown" class="styled-dropdown dropdown-label"
                     onchange="handleDropdownChange(this)">
@@ -12,6 +12,8 @@
                     <option value="{{ route('products.create') }}">➕ Aggiungi prodotto</option>
                     <option value="{{ route('products.order') }}">📦Ordini</option>
                 </select>
+                {{-- Homepage --}}
+                <a class="btn btn-outline-dark mb-2" href="{{ route('products.index') }}">Homepage</a>
             </div>
 
             <script>
@@ -70,10 +72,6 @@
             </style>
         </div>
 
-
-        {{-- Logo --}}
-        <a class="navbar-brand ms-4 fs-5 border border-dark rounded-circle p-3"
-            href="{{ route('products.index') }}">Logo</a>
 
         {{-- Form --}}
         <form action="{{ route('products.search') }}" method="GET" class="mb-4 d-flex gap-2 align-items-center mt-2">

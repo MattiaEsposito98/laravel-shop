@@ -4,7 +4,7 @@
     {{-- @dd($order) --}}
     <div class="container">
         <h1 class="text-center m-3">Dettagli dell'Ordine</h1>
-        <div class="d-flex m-3 justify-content-around align-items-center">
+        <div class="d-md-flex m-3 justify-content-around align-items-center">
 
             <div>
                 <p
@@ -16,33 +16,34 @@
                 </p>
             </div>
 
-            <div>
-                <table class="table table-bordered text-center" style="background-color: #e3f2fd;">
-                    <thead class="table-primary">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle shadow-sm rounded" style="background-color: #f8f9fa;">
+                    <thead class="table-primary text-center">
                         <tr>
-                            <th>User ID</th>
-                            <th>Nome Utente</th>
-                            <th>Email dell'utente</th>
-                            <th>Ordine ID</th>
-                            <th>Totale dell'ordine</th>
+                            <th scope="col">User ID</th>
+                            <th scope="col">Nome Utente</th>
+                            <th scope="col">Email dell'Utente</th>
+                            <th scope="col">Ordine ID</th>
+                            <th scope="col">Totale Ordine</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-center">
                         <tr>
-                            <td>{{ $order->user->id }}</td>
+                            <td><strong>{{ $order->user->id }}</strong></td>
                             <td>{{ $order->user->name }}</td>
                             <td>{{ $order->user->email }}</td>
-                            <td>{{ $order->id }}</td>
-                            <td>{{ $order->total }}</td>
+                            <td>#{{ $order->id }}</td>
+                            <td><span class="badge bg-success">€ {{ number_format($order->total, 2, ',', '.') }}</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
         </div>
 
         <div class="d-flex justify-content-center mt-5">
             <table class="table table-hover table-striped shadow-sm text-center">
-                <thead class="bg-dark text-white">
+                <thead class="table-danger">
                     <tr>
                         <th>Nome del prodotto</th>
                         <th>Quantità</th>

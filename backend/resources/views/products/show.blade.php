@@ -32,21 +32,25 @@
 
         @if ($product->orders->isNotEmpty())
             <table class="table table-striped table-bordered mt-3">
-                <thead class="thead-dark">
-                    <tr>
+                <thead class="table-success">
+                    <tr class="text-center">
                         <th scope="col">Acquirente</th>
                         <th scope="col">ID Ordine</th>
                         <th scope="col">Totale dell'ordine</th>
                         <th scope="col">Stato</th>
+                        <th scope="col">Dettagli</th>
                     </tr>
-                </thead>
+                </thead> class="text-center"
                 <tbody>
                     @foreach ($product->orders as $order)
                         <tr>
-                            <td>{{ $order->user->name }}</td>
-                            <td>{{ $order->id }}</td>
-                            <td>€{{ number_format($order->total, 2, ',', '.') }}</td>
-                            <td>{{ ucfirst($order->status) }}</td>
+                            <td class="text-center">{{ $order->user->name }}</td>
+                            <td class="text-center">{{ $order->id }}</td>
+                            <td class="text-center">€{{ number_format($order->total, 2, ',', '.') }}</td>
+                            <td class="text-center">{{ ucfirst($order->status) }}</td>
+                            <td class="text-center"><a href="{{ route('products.orderShow', $product->id) }}"> Dettagli</a>
+                            </td>
+
                         </tr>
                     @endforeach
                 </tbody>
