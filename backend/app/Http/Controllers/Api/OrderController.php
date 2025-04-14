@@ -17,6 +17,11 @@ class OrderController extends Controller
         return view('products.order', compact('orders'));
     }
 
+    public function show(Order $order)
+    {
+        $order->load(['products', 'orderItems', 'user']);
+        return view('products.orderShow', compact('order'));
+    }
 
     public function store(Request $request)
     {

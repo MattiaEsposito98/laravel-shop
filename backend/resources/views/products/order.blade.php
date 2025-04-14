@@ -14,6 +14,7 @@
                         <th>Nome utente</th>
                         <th>Total</th>
                         <th>Status</th>
+                        <th>Dettagli</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,10 +24,8 @@
                             <td>{{ $order->user->name }}</td>
                             <td>€{{ number_format($order->total, 2) }}</td>
                             <td>{{ $order->status }}</td>
+                            <td><a href="{{ route('products.orderShow', $order->id) }}">Vedi Dettagli</a></td>
                         </tr>
-                        {{-- @foreach ($order->products as $product)
-                            <td>{{ $product->name }}</td>
-                        @endforeach --}}
                     @endforeach
                 </tbody>
             </table>

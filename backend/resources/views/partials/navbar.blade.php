@@ -10,6 +10,7 @@
                     <option value="{{ route('profile.edit') }}">👤 Profilo</option>
                     <option value="{{ route('products.eliminated') }}">🗑️ Prodotti eliminati</option>
                     <option value="{{ route('products.create') }}">➕ Aggiungi prodotto</option>
+                    <option value="{{ route('products.order') }}">📦Ordini</option>
                 </select>
             </div>
 

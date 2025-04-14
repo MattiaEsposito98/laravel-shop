@@ -26,7 +26,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('products', ShopController::class);
     Route::get('eliminated_products', [ShopController::class, 'eliminated'])->name('products.eliminated');
     Route::get('search_product', [ShopController::class, 'search'])->name('products.search');
-    Route::get('orders', [OrderController::class, 'index'])->name('product.order');
+    Route::get('orders', [OrderController::class, 'index'])->name('products.order');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('products.orderShow');
 });
 
 Route::get('/', function () {
