@@ -46,6 +46,9 @@ export default function Header() {
               </ul>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to='order'>Ordini </Link>
+            </li>
+            <li className="nav-item">
               <Link to="/cart" className="nav-link position-relative">
                 Carrello
                 <span className="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">
@@ -53,7 +56,9 @@ export default function Header() {
                   <span className="visually-hidden">carrelli</span> {/* Per l'accessibilità */}
                 </span>
               </Link>
+
             </li>
+
 
           </ul>
           <form className="d-flex" role="search">

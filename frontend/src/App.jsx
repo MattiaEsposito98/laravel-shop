@@ -6,7 +6,8 @@ import DefaultLayout from "./layouts/DefaultLayout"
 import Homepage from "./pages/Homepage"
 import Login from "./components/Login"
 import Register from "./components/Register"
-import cart from "./pages/Cart"
+import Cart from "./pages/Cart"
+import Order from "./pages/Order"
 
 
 
@@ -22,7 +23,8 @@ function App() {
               <Route index Component={Homepage}></Route>
               <Route path="/login" Component={Login}></Route>
               <Route path="/register" Component={Register}></Route>
-              <Route path="cart" Component={cart}></Route>
+              <Route path="cart" Component={Cart}></Route>
+              <Route path="order" Component={Order}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
