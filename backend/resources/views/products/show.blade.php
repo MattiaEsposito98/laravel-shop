@@ -38,9 +38,9 @@
                         <th scope="col">ID Ordine</th>
                         <th scope="col">Totale dell'ordine</th>
                         <th scope="col">Stato</th>
-                        <th scope="col">Dettagli</th>
+                        <th scope="col">Dettagli dell'ordine</th>
                     </tr>
-                </thead> class="text-center"
+                </thead>
                 <tbody>
                     @foreach ($product->orders as $order)
                         <tr>
@@ -48,7 +48,7 @@
                             <td class="text-center">{{ $order->id }}</td>
                             <td class="text-center">€{{ number_format($order->total, 2, ',', '.') }}</td>
                             <td class="text-center">{{ ucfirst($order->status) }}</td>
-                            <td class="text-center"><a href="{{ route('products.orderShow', $product->id) }}"> Dettagli</a>
+                            <td class="text-center"><a href="{{ route('products.orderShow', $product->id) }}">Dettagli</a>
                             </td>
 
                         </tr>

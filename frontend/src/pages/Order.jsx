@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import CartOrder from "../components/cardOrder";
 
 export default function Order() {
-  const [order, setOrder] = useState([]);
+  const [orders, setOrders] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export default function Order() {
     })
       .then(res => {
         console.log(res.data.data);
-        setOrder(res.data.data);
+        setOrders(res.data.data);
       })
       .catch(err => {
         console.error("Errore nella richiesta:", err.response);
@@ -25,9 +26,19 @@ export default function Order() {
   return (
     <>
       <div className="container">
-        <h1>I tuoi ordini: {order.length}</h1>
-        <
+        <h1 className="my-4">I tuoi ordini: {orders.length}</h1>
+        {orders.length > 0 ?
+          orders.map(order => (
+            <div className="row justify-content-center" key={order.id}>
+              <div className="col-md-6"> {/* Modifica qui */}
+                <CartOrder order={order} />
+              </div>
+            </div>
+          )) :
+          <p>Nessun ordine presente</p>
+        }
       </div>
+
     </>
 
   )
