@@ -43,4 +43,4 @@ Route::middleware('auth:sanctum')->delete('/cart-items/{id}', [CartItemControlle
 Route::delete('/clear-cart', [CartItemController::class, 'clearCart'])->middleware('auth:sanctum');
 
 // Rotta per vedere gli ordini
-Route::get('/order', [OrderController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/userOrders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');

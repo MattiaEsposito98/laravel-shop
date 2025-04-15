@@ -31,7 +31,7 @@ export default function Cart() {
       });
 
       console.log('Carrello svuotato:', response.data);
-      // Puoi anche chiamare clearCart dal context per rimuoverlo dalla UI
+      // Puliamo il carello
       clearCart();
     } catch (err) {
       console.error('Errore durante lo svuotamento del carrello:', err.response ? err.response.data : err.message);

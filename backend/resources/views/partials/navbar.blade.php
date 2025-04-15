@@ -3,18 +3,25 @@
         <div>
             {{-- Profilo --}}
             <div class="dropdown-container d-flex align-items-center gap-3">
-                {{-- <label for="dropdown" class="dropdown-label">{{ Auth::user()->name }}</label> --}}
-                <select name="dropdown" id="dropdown" class="styled-dropdown dropdown-label"
-                    onchange="handleDropdownChange(this)">
-                    <option value="" disabled selected>{{ Auth::user()->name }}</option>
-                    <option value="{{ route('profile.edit') }}">👤 Profilo</option>
-                    <option value="{{ route('products.eliminated') }}">🗑️ Prodotti eliminati</option>
-                    <option value="{{ route('products.create') }}">➕ Aggiungi prodotto</option>
-                    <option value="{{ route('products.order') }}">📦Ordini</option>
-                </select>
+                @if (Auth::check())
+                    <select name="dropdown" id="dropdown" class="styled-dropdown dropdown-label"
+                        onchange="handleDropdownChange(this)">
+                        <option value="" disabled selected>{{ Auth::user()->name }}</option>
+                        <option value="{{ route('profile.edit') }}">👤 Profilo</option>
+                        <option value="{{ route('products.eliminated') }}">🗑️ Prodotti eliminati</option>
+                        <option value="{{ route('products.create') }}">➕ Aggiungi prodotto</option>
+                        <option value="{{ route('products.order') }}">📦Ordini</option>
+                    </select>
+                @else
+                    <select class="styled-dropdown dropdown-label" disabled>
+                        <option selected>Ospite</option>
+                    </select>
+                @endif
+
                 {{-- Homepage --}}
                 <a class="btn btn-outline-dark mb-2" href="{{ route('products.index') }}">Homepage</a>
             </div>
+
 
             <script>
                 function handleDropdownChange(dropdown) {
