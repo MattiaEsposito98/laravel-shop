@@ -3,14 +3,15 @@ import { GlobalContext } from "../context/GlobalContext";
 import CardCart from "../components/CardCart";
 import axios from "axios";
 import Loader from "../components/Loader";
+import Swal from 'sweetalert2';
+
 
 export default function Cart() {
-  const { cart, removeFromCart, clearCart, fetchCart, loading, showLoader, hideLoader, addToCart } = useContext(GlobalContext);
+  const { cart, removeFromCart, clearCart, fetchCart, loading, showLoader, hideLoader, addToCart, showAlert } = useContext(GlobalContext);
   console.log("Cart:", cart);
 
   // Funzione per calcolare il totale
   const calculateTotalPrice = (cart) => {
-    if (!Array.isArray(cart)) return 0;
 
     return cart.reduce((total, item) => {
       const price = parseFloat(item.product?.price ?? 0);
@@ -43,8 +44,19 @@ export default function Cart() {
 
   // Funzione per effettuare l'acquisto
   const handleBuy = async () => {
-    let text = 'Sei sicuro dell\'acquisto';
-    if (confirm(text) == true) {
+    const result = await Swal.fire({
+      title: 'Sei sicuro?',
+      text: "Vuoi davvero completare l'acquisto?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sì, acquista!',
+      cancelButtonText: 'Annulla',
+      position: 'center',
+    });
+
+    if (result.isConfirmed) {
       showLoader(); // ✅ Mostra il loader
       const token = localStorage.getItem("token");
       const totalPrice = calculateTotalPrice(cart);
@@ -61,7 +73,11 @@ export default function Cart() {
           }
         );
         console.log("Ordine creato:", response.data);
-        alert('Acquisto confermato');
+        showAlert({
+          title: "Ordine completato",
+          text: "Grazie per l'acquisto!",
+          icon: "success",
+        });
         clearCart();     // ✅ Svuota il carrello nella UI
         fetchCart();     // ✅ Aggiorna i dati con quelli da backend
       } catch (err) {
@@ -69,8 +85,9 @@ export default function Cart() {
       } finally {
         hideLoader(); // ✅ Nasconde il loader alla fine
       }
-    } else return;
+    }
   };
+
 
   return (
     <>

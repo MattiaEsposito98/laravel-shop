@@ -1,7 +1,10 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2';
+
 
 export const GlobalContext = createContext();
+
 
 export default function GlobalProvider({ children }) {
   const [products, setProducts] = useState([]);
@@ -11,6 +14,18 @@ export default function GlobalProvider({ children }) {
 
   axios.defaults.withCredentials = true;
   axios.defaults.baseURL = 'http://localhost:8000';
+
+  // Alert modificato
+  const showAlert = ({ title, text, icon = 'info', position = 'center' }) => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      confirmButtonText: 'Ok',
+      position,
+    });
+  };
+
 
   // Effettua il fetch dei prodotti all'avvio
   useEffect(() => {
@@ -155,7 +170,10 @@ export default function GlobalProvider({ children }) {
       console.log("Prodotto aggiunto al carrello");
 
       await fetchCart();
-      alert('🛒 Prodotto aggiunto al carrello');
+      showAlert({
+        text: "🛒 Prodotto aggiunto al carrello",
+        icon: "success",
+      });
     } catch (err) {
       console.error("Errore nell'aggiungere al carrello:", err);
     }
@@ -208,6 +226,7 @@ export default function GlobalProvider({ children }) {
         loading,
         showLoader,
         hideLoader,
+        showAlert
       }}
     >
       {children}
