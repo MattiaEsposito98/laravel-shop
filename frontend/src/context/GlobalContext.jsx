@@ -155,7 +155,7 @@ export default function GlobalProvider({ children }) {
       console.log("Prodotto aggiunto al carrello");
 
       await fetchCart();
-      alert('Prodotto aggiunto al carrello');
+      alert('🛒 Prodotto aggiunto al carrello');
     } catch (err) {
       console.error("Errore nell'aggiungere al carrello:", err);
     }

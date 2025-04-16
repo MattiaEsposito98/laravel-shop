@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CartItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -94,5 +95,26 @@ class CartItemController extends Controller
             Log::error('Errore durante lo svuotamento del carrello: ' . $e->getMessage());
             return response()->json(['error' => 'Errore interno'], 500);
         }
+    }
+
+
+    // Rimuovere solo un elemento dal carello
+    public function decrease(Product $product)
+    {
+        $user = auth()->user();
+
+        $cartItem = $user->cartItems()->where('product_id', $product->id)->first();
+
+        if (!$cartItem) {
+            return response()->json(['message' => 'Prodotto non trovato nel carrello'], 404);
+        }
+
+        if ($cartItem->quantity > 1) {
+            $cartItem->decrement('quantity');
+        } else {
+            $cartItem->delete();
+        }
+
+        return response()->json(['message' => 'Quantità aggiornata con successo']);
     }
 }
