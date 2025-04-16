@@ -70,4 +70,15 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
+
+    public function detailsOrder(Order $order)
+    {
+        $order->load(['products', 'orderItems', 'user']);
+
+
+        return response()->json([
+            'success' => true,
+            'data' => $order
+        ]);
+    }
 }

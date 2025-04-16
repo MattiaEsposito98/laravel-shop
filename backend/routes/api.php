@@ -44,3 +44,6 @@ Route::delete('/clear-cart', [CartItemController::class, 'clearCart'])->middlewa
 
 // Rotta per vedere gli ordini
 Route::get('/userOrders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');
+
+// Rotta per i dettagli dell'ordine
+Route::get('/orders/{order}', [OrderController::class, 'detailsOrder']);
