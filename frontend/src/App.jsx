@@ -8,6 +8,7 @@ import Login from "./components/Login"
 import Register from "./components/Register"
 import Cart from "./pages/Cart"
 import Order from "./pages/Order"
+import ShowOrder from "./pages/showOrder"
 
 
 
@@ -25,10 +26,11 @@ function App() {
               <Route path="/register" Component={Register}></Route>
               <Route path="cart" Component={Cart}></Route>
               <Route path="order" Component={Order}></Route>
+              <Route path="/orders/:id" element={<ShowOrder />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
-      </GlobalProvider>
+      </GlobalProvider >
     </>
   )
 }

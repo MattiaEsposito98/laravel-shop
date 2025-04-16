@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 export default function CartOrder({ order }) {
   return (
@@ -16,8 +16,9 @@ export default function CartOrder({ order }) {
             </span>
           ))}
           <div className="d-flex justify-content-between align-items-center mt-2">
-            <a href="#" className="btn btn-primary">Dettagli</a>
-            <strong className="card-text">{order.total}€</strong>
+            <Link to={`/orders/${order.id}`} className="btn btn-primary">
+              Dettagli
+            </Link> <strong className="card-text">{order.total}€</strong>
           </div>
         </div>
       </div>

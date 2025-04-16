@@ -56,7 +56,7 @@ export default function Cart() {
           }
         );
         console.log("Ordine creato:", response.data);
-
+        alert('Acquisto confermato')
         clearCart();     // svuota il carrello nella UI
         fetchCart();     // aggiorna i dati con quelli da backend
       } catch (err) {
