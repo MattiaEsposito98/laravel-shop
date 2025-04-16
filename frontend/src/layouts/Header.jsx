@@ -11,7 +11,7 @@ export default function Header() {
     <nav className="navbar navbar-expand-lg bg-info">
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
-          {user ? `${user.name}` : 'Accedi'}
+          {user ? `${user.name}` : 'Guest'}
         </a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -34,17 +34,9 @@ export default function Header() {
                 </button>
               </li>
             )}
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-              </a>
-              <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#">Action</a></li>
-                <li><Link to={"/register"} className="dropdown-item" >Registrati</Link></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><a className="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
+            {!user &&
+              <Link to={'/register'} className="nav-link">Registrati</Link>
+            }
             <li className="nav-item">
               <Link className="nav-link" to='order'>Ordini </Link>
             </li>

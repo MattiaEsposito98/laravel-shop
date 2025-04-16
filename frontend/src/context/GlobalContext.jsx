@@ -123,7 +123,6 @@ export default function GlobalProvider({ children }) {
 
   // Funzione per recuperare il carrello
   const fetchCart = async () => {
-    showLoader();  // Mostra il loader
     try {
       const response = await axios.get('/api/cart-items', {
         headers: {
@@ -135,14 +134,12 @@ export default function GlobalProvider({ children }) {
       setCart(response.data);
     } catch (error) {
       console.error('Errore nel recupero del carrello:', error);
-    } finally {
-      hideLoader();  // Nascondi il loader
     }
   };
 
   // Funzioni aggiungere prodotti al carrello
   const addToCart = async (product) => {
-    showLoader();  // Mostra il loader
+
     try {
       await axios.post(
         '/api/cart-items',
@@ -161,8 +158,6 @@ export default function GlobalProvider({ children }) {
       alert('Prodotto aggiunto al carrello');
     } catch (err) {
       console.error("Errore nell'aggiungere al carrello:", err);
-    } finally {
-      hideLoader();  // Nascondi il loader
     }
   };
 
