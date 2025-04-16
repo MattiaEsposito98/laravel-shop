@@ -8,21 +8,26 @@ export default function ShowOrder() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Effettua la richiesta e imposta lo stato
     axios.get(`http://localhost:8000/api/orders/${id}`)
       .then(res => {
-        setOrder(res.data.data);
-        setLoading(false);
-        console.log(res.data.data);
+        setOrder(res.data.data);  // Imposta i dati dell'ordine
       })
       .catch(err => {
-        console.error(err);
-        setLoading(false);
+        console.error(err);  // Gestione errore
+      })
+      .finally(() => {
+        setLoading(false);  // Assicurati di impostare loading a false
       });
   }, [id]);
 
+  // Caricamento
   if (loading) return <div className="text-center mt-5"><p>Caricamento in corso...</p></div>;
+
+  // Ordine non trovato
   if (!order) return <div className="text-center mt-5"><p>Ordine non trovato</p></div>;
 
+  // Dettagli dell'ordine
   return (
     <div className="container mt-5">
       <div className="row mb-4">

@@ -11,9 +11,6 @@ export default function Homepage() {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  //indexOfLastProduct: L'indice dell'ultimo prodotto da visualizzare in base alla pagina corrente.
-  // indexOfFirstProduct: L'indice del primo prodotto.
-  // currentProducts: Utilizza il metodo slice per ottenere la porzione di prodotti relativa alla pagina corrente.
 
   // Numero totale delle pagine
   const totalPages = Math.ceil(products.length / productsPerPage);
