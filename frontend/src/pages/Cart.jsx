@@ -5,7 +5,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 
 export default function Cart() {
-  const { cart, removeFromCart, clearCart, fetchCart, loading, showLoader, hideLoader } = useContext(GlobalContext);
+  const { cart, removeFromCart, clearCart, fetchCart, loading, showLoader, hideLoader, addToCart } = useContext(GlobalContext);
   console.log("Cart:", cart);
 
   // Funzione per calcolare il totale
@@ -86,21 +86,21 @@ export default function Cart() {
               <ul className="list-group">
                 {cart.map((item) => (
                   <li key={item.id} className="list-group-item mb-2">
-                    <CardCart item={item} onRemove={removeFromCart} />
+                    <CardCart item={item} onRemove={removeFromCart} addToCart={addToCart} />
                   </li>
                 ))}
               </ul>
             )}
           </div>
           {cart.length > 0 && (
-            <div>
+            <div className="mt-3">
               <div className="d-flex gap-2">
                 <button className="btn btn-warning" onClick={handleClearCart}>
                   Svuota Carrello
                 </button>
                 <button className="btn btn-success" onClick={handleBuy}>Compra</button>
               </div>
-              <h3>Totale: {calculateTotalPrice(cart)}€</h3>
+              <h3 className="mt-3">Totale: {calculateTotalPrice(cart).toFixed(2)}€</h3>
             </div>
           )}
         </div>

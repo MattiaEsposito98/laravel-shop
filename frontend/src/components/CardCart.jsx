@@ -1,4 +1,4 @@
-export default function CardCart({ item, onRemove }) {
+export default function CardCart({ item, onRemove, addToCart }) {
   const { product, quantity } = item;
 
   return (
@@ -16,7 +16,7 @@ export default function CardCart({ item, onRemove }) {
           <div className="card-body py-2 px-3">
             <h5 className="card-title mb-1">{product.name}</h5>
             <p className="card-text mb-1 text-muted">Prezzo: {product.price}€</p>
-            <p className="card-text mb-2">Quantità: {quantity}</p>
+            <p className="card-text mb-2">Quantità: {quantity} <button className="btn btn-primary p-1" onClick={() => addToCart(product)}>+</button></p>
           </div>
         </div>
         <div className="col-auto me-3">
